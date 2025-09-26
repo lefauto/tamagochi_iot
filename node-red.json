@@ -1,0 +1,93 @@
+[
+    {
+        "id": "1a2b3c4d5e6f",
+        "type": "tab",
+        "label": "Tamagochi IoT",
+        "disabled": false,
+        "info": "Fluxo que recebe dados do tamagochi e salva em arquivo texto"
+    },
+    {
+        "id": "mqtt_in",
+        "type": "mqtt in",
+        "z": "1a2b3c4d5e6f",
+        "name": "MQTT ",
+        "topic": "tamagochi/#",
+        "qos": "0",
+        "datatype": "auto",
+        "broker": "broker_config",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 100,
+        "y": 100,
+        "wires": [
+            [
+                "formatar_msg"
+            ]
+        ]
+    },
+    {
+        "id": "formatar_msg",
+        "type": "function",
+        "z": "1a2b3c4d5e6f",
+        "name": "Formatador",
+        "func": "msg.payload = `${new Date().toISOString()} | ${msg.topic} | ${msg.payload}\\n`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 100,
+        "wires": [
+            [
+                "salvar_arquivo"
+            ]
+        ]
+    },
+    {
+        "id": "salvar_arquivo",
+        "type": "file",
+        "z": "1a2b3c4d5e6f",
+        "name": "Salvando",
+        "filename": "log_tamagochi.txt",
+        "filenameType": "str",
+        "appendNewline": false,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "utf8",
+        "x": 580,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "broker_config",
+        "type": "mqtt-broker",
+        "name": "MQTT",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    }
+]
